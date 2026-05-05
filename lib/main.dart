@@ -17,6 +17,7 @@ class SpendWiseApp extends StatelessWidget {
       title: 'SpendWise',
       theme: ThemeData(
         useMaterial3: true,
+
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       home: const HomePage(),
@@ -57,5 +58,45 @@ class Transaksi {
       tanggal: DateTime.parse(map['tanggal']),
       isPemasukan: map['isPemasukan'],
     );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+  
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<Transaksi> _userTransaksi = [];
+  final _judulController = TextEditingController();
+  final _jumlahController = TextEditingController();
+  bool _statusPemasukan = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? dataJson = prefs.getString('transaksi_list');
+
+    if (dataJson != null) {
+      final List<dynamic> decodedData = json.decode(dataJson);
+      setState(() {
+        _userTransaksi = decodedData.map((item) => Transaksi.fromMap(item)).toList();
+      });
+    }
+  }
+
+  Future<void> _saveData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String encodedData = json.encode(
+      _userTransaksi.map((item) => item.toMap()).toList(),
+    );
+    await prefs.setString('transaksi_list', encodedData);
   }
 }
