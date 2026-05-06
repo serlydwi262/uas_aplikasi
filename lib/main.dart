@@ -99,4 +99,45 @@ class _HomePageState extends State<HomePage> {
     );
     await prefs.setString('transaksi_list', encodedData);
   }
+
+  double get _totalPemasukan => _userTransaksi.where((t) => t.isPemasukan).fold(0, (a, b) => a + b.jumlah);
+  double get _totalPengeluaran => _userTransaksi.where((t) => !t.isPemasukan).fold(0, (a, b) => a + b.jumlah);
+  double get _totalSaldo => _totalPemasukan - _totalPengeluaran;
+
+  void _tambahDataBaru() {
+    final judul = _judulController.text;
+    final nominal = double.tryParse(_JumlahController.text) ?? 0;
+
+    if (judul.isEmpty || nominal <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Data tidak valid! Isi semua kolom.")),
+      );
+      return;
+    }
+
+
+    FocusScope.of(context).unfocus();
+
+    setState(() {
+      _userTransaksi.insert(0, Transaksi(
+        id: DateTime.now().toString(),
+        judul: judul,
+        jumlah: nominal,
+        tanggal: DateTime.now(),
+        isPemasukan: _statusPemasukan,
+      ));
+    });
+
+    _saveData();
+    _judulController.clear();
+    _jumlahController.clear();
+    Navigator.of(context).pop();
+  }
+
+  void _hapusTransaksi(String id) {
+    setState(() {
+      _userTransaksi.removeWhere((t) => t.id == id);
+    });
+    _saveData();
+  }
 }
