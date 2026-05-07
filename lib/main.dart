@@ -140,4 +140,52 @@ class _HomePageState extends State<HomePage> {
     });
     _saveData();
   }
+
+  void _bukanModalInput(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (_) {
+        return StatefulBuilder(builder: (context, setModalState) {
+          return Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom, top: 20, left: 20, right: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text("Tambah Catatan Baru", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                TextField(controller: _judulController, decoration: const InputDecoration(labelText: 'Keterangan')),
+                TextField(controller: _jumlahController, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Nominal (Rp)')),
+                const SizedBox(height: 15),
+                ToggleButtons(
+                  isSelected: [!_statusPemasukan, _statusPemasukan],
+                  onPressed: (index) => setModalState(() => _statusPemasukan = index == 1),
+                  borderRadius: BorderRadius.circular(10),
+                  
+                  selectedColor: Colors.white,
+                  fillColor:  Colors.blue,
+                  children: const [
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text("Pengeluaran")),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text("Pemasukan")),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _tambahDataBaru,
+                  
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white
+                  ),
+                  child: const Text ("Simpan Transaksi"),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          );
+        });
+      },
+    );
+  }
 }
