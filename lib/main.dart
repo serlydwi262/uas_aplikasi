@@ -40,7 +40,7 @@ class Transaksi {
     required this.isPemasukan,
   });
 
-  Map<String, dynamic> topMap() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'judul': judul,
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
 
   void _tambahDataBaru() {
     final judul = _judulController.text;
-    final nominal = double.tryParse(_JumlahController.text) ?? 0;
+    final nominal = double.tryParse(_jumlahController.text) ?? 0;
 
     if (judul.isEmpty || nominal <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> {
 
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
-                end: Alignm.bottomRight,
+                end: Alignment.bottomRight,
                 colors: [Colors.blueAccent, Colors.blue, Colors.indigo],
               ),
               boxShadow: [
@@ -239,5 +239,83 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Riwayat Transaksi", style: TextStyle(fontSize: 18, fontWeight: FontWeight: FontWeight.bold))
+            ),
+          ),
+          Expanded(
+            child: _userTransaksi.isEmpty
+                ? const Center(child: Text("Belum ada data."))
+                : ListView.builder(
+                  itemCount: _userTransaksi.length,
+                  itemBuilder: (ctx, i)  {
+                    final t = _userTransaksi[i];
+                    return Dismissible(
+                      key: Key(t.id),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      onDismissed: (dir) => _hapusTransaksi(t.id),
+                      child: Card(
+                        elevation: 0,
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            
+                            backgroundColor: t.isPemasukan ? Colors.blue[50] : Colors.red[50],
+                            child: Icon(
+                              t.isPemasukan ? Icons.account_balance_wallet : Icons.shopping_bag,
+                              color: t.isPemasukan ? Colors.blue : Colors.red,
+                            ),
+                          ),
+                          title: Text(t.judul, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Text(DateFormat('dd MMM yyyy').format(t.tanggal)),
+                          trailing: Text(
+                            "Rp ${NumberFormat('#,###', 'id_ID').format(t.jumlah)}",
+                            style: Text(
+                              color: t.isPemasukan ? Colors.blue : Colors.red,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _bukaModalInput(context),
+        label: const Text("Tambah"),
+        icon: const Icon(Icons.add),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+    );
+  }
 
+  Widget _buildStatItem(String label, double val, IconData icon, Color color) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: color),
+        const SizedBox(width: 4),
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(label, style: TextStyle(fontSize: 10, color: color.withOpacity(0.7))),
+          Text(
+            "Rp ${NumberFormat('#,###', 'id_ID').format(val)}",
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color)
+          ),
+        ]),
+      ],
+    );
+  }
 }
