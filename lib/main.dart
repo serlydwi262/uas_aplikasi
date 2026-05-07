@@ -188,4 +188,56 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: const Text("Spendwise", style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignm.bottomRight,
+                colors: [Colors.blueAccent, Colors.blue, Colors.indigo],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5)
+                )
+              ],
+            ),
+            child: Column(
+              children: [
+                const Text("Total Saldo", style: TextStyle(color: Colors.white70)),
+                Text(
+                  "Rp ${NumberFormat('#,###', 'id_ID').format(_totalSaldo)}",
+                  style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)
+                ),
+                const Divider(color: Colors.white24, height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildStatItem("Masuk", _totalPemasukan, Icons.arrow_downward, Colors.white),
+                    _buildStatItem("Keluar", _totalPengeluaran, Icons.arrow_upward, Colors.white),
+                  ],
+                )
+              ],
+            ),
+          ),
+
 }
