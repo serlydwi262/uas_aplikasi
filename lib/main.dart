@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
     _saveData();
   }
 
-  void _bukanModalInput(BuildContext ctx) {
+  void _bukaModalInput(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
       isScrollControlled: true,
@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text("Riwayat Transaksi", style: TextStyle(fontSize: 18, fontWeight: FontWeight: FontWeight.bold))
+              child: Text("Riwayat Transaksi", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
             ),
           ),
           Expanded(
@@ -280,9 +280,9 @@ class _HomePageState extends State<HomePage> {
                           subtitle: Text(DateFormat('dd MMM yyyy').format(t.tanggal)),
                           trailing: Text(
                             "Rp ${NumberFormat('#,###', 'id_ID').format(t.jumlah)}",
-                            style: Text(
+                            style: TextStyle(
                               color: t.isPemasukan ? Colors.blue : Colors.red,
-                              fontWeight: FontWeight.bold
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
