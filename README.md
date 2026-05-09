@@ -17,7 +17,7 @@ Blueprint ini berfungsi sebagai acuan pengembangan dari tahap awal hingga aplika
 * **Kegiatan Utama:** Setup Project & GIT.
 * **Detail Teknis:** `flutter create`, inisialisasi repo GitHub, dan Koneksi remote.
 
-* **Fase II: Desai UI**
+**Fase II: Desai UI**
 * **Kegiatan Utama:** Layouting & Styling.
 * **Detail Teknis:** Implementasi `LinearGradient` biru, Custom Cards, dan `FloatingActionButton`.
 
